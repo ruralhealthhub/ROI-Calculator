@@ -109,7 +109,7 @@ const ORIGINATION_FEE = 31;
 const FIRST_SITE_FEE = 10000;
 const ADDITIONAL_SITE_FEE = 5000;
 const BASE_PER_LOCATION = 1000;
-const BASE_ADDITIONAL_LOCATION = 250;
+const BASE_ADDITIONAL_LOCATION = 500;
 const PER_SPECIALTY = 0;
 const ALL_SPECIALTY_DISCOUNT = 0.30;
 const PROGRAM_DISCOUNT = 0.30;
@@ -957,35 +957,24 @@ function CombinedDashboard() {
   }, "02"), " Specialty Access", /*#__PURE__*/React.createElement("span", {
     style: styles.monthlyTag
   }, "all specialties included \xB7 no added cost")), /*#__PURE__*/React.createElement("div", {
-    style: styles.selectAllBar
-  }, /*#__PURE__*/React.createElement("button", {
-    style: styles.selectAllBtn,
-    onClick: selectAll,
-    disabled: allSelected
-  }, "\u2713 Select All Specialties"), /*#__PURE__*/React.createElement("button", {
-    style: styles.clearBtn,
-    onClick: clearAll
-  }, "Clear all"), /*#__PURE__*/React.createElement("div", {
-    style: styles.selCount
-  }, selected.size, " of ", SPECIALTIES.length, " selected")), /*#__PURE__*/React.createElement("div", {
+    style: { ...styles.providerHighlight, marginBottom: 12 }
+  }, /*#__PURE__*/React.createElement("strong", null, "All Specialties Included and growing"), " \u2014 unlimited access to additional specialists as they are added to the RHH."), /*#__PURE__*/React.createElement("div", {
     style: styles.specGrid,
     className: "spec-grid"
   }, SPECIALTIES.map(name => {
-    const on = selected.has(name);
-    return /*#__PURE__*/React.createElement("button", {
+    return /*#__PURE__*/React.createElement("div", {
       key: name,
-      onClick: () => toggleSpec(name),
       style: {
         ...styles.specChip,
-        ...(on ? styles.specChipOn : {})
+        ...styles.specChipOn
       },
       className: "spec-chip"
     }, /*#__PURE__*/React.createElement("span", {
       style: {
         ...styles.checkbox,
-        ...(on ? styles.checkboxOn : {})
+        ...styles.checkboxOn
       }
-    }, on ? "✓" : ""), /*#__PURE__*/React.createElement("span", {
+    }, "\u2713"), /*#__PURE__*/React.createElement("span", {
       style: styles.specName
     }, name, name.startsWith("Uncontrolled") ? /*#__PURE__*/React.createElement("span", {
       style: styles.specSub
