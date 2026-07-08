@@ -108,15 +108,15 @@ const ORIGINATION_FEE = 31;
 
 const FIRST_SITE_FEE = 10000;
 const ADDITIONAL_SITE_FEE = 5000;
-const BASE_PER_LOCATION = 500;
+const BASE_PER_LOCATION = 1000;
 const BASE_ADDITIONAL_LOCATION = 250;
-const PER_SPECIALTY = 25;
+const PER_SPECIALTY = 0;
 const ALL_SPECIALTY_DISCOUNT = 0.30;
 const PROGRAM_DISCOUNT = 0.30;
 const PER_PROVIDER = 500;
 const INCLUDED_CONSULTS_PER_PROVIDER = 2;
 const CONSULT_PACK_SIZE = 5;
-const CONSULT_PACK_PRICE = 400;
+const CONSULT_PACK_PRICE = 425;
 const CONSULT_OVERAGE = 90;
 const TELEHEALTH_PER_SITE = 200;
 const UNINS_OVERAGE = 180;
@@ -153,7 +153,7 @@ function CombinedDashboard() {
   const [rx340bOn, setRx340bOn] = useState(true);
   const [sites, setSites] = useState("");
   const [providers, setProviders] = useState("");
-  const [selected, setSelected] = useState(() => new Set());
+  const [selected, setSelected] = useState(() => new Set(SPECIALTIES));
   const [uninsOn, setUninsOn] = useState(false);
   const [smallHospOverride, setSmallHospOverride] = useState(null);
   const [uninsTier, setUninsTier] = useState("t1");
@@ -852,9 +852,9 @@ function CombinedDashboard() {
     style: styles.methodTitle
   }, "How these program costs work"), /*#__PURE__*/React.createElement("p", {
     style: styles.methodText
-  }, "Unlike the revenue side, these are ", /*#__PURE__*/React.createElement("strong", null, "fixed program prices, not estimates."), " ", "The ", /*#__PURE__*/React.createElement("strong", null, "one-time setup fee"), " (", fmtMoney(FIRST_SITE_FEE), " first site,", " ", fmtMoney(ADDITIONAL_SITE_FEE), " each additional) is paid once and covers all equipment, customization, training, and 60-day deployment. The remaining items \u2014", " ", /*#__PURE__*/React.createElement("strong", null, "the base subscription (", fmtMoney(BASE_PER_LOCATION), " first site + ", fmtMoney(BASE_ADDITIONAL_LOCATION), "/additional, which bundles telehealth software, a WiFi-enabled stethoscope, and data analytics), specialty access, per-provider fees, and curbside consults"), " \u2014 are", " ", /*#__PURE__*/React.createElement("strong", null, "billed monthly"), ", and shown below as both monthly and annual figures."), /*#__PURE__*/React.createElement("p", {
+  }, "Unlike the revenue side, these are ", /*#__PURE__*/React.createElement("strong", null, "fixed program prices, not estimates."), " ", "The ", /*#__PURE__*/React.createElement("strong", null, "one-time setup fee"), " (", fmtMoney(FIRST_SITE_FEE), " first site,", " ", fmtMoney(ADDITIONAL_SITE_FEE), " each additional) is paid once and covers all equipment, customization, training, and 60-day deployment. The remaining items \u2014", " ", /*#__PURE__*/React.createElement("strong", null, "the base subscription (", fmtMoney(BASE_PER_LOCATION), " first site + ", fmtMoney(BASE_ADDITIONAL_LOCATION), "/additional, which bundles telehealth software, a WiFi-enabled stethoscope, and data analytics, and unlimited specialty access), per-provider fees, and curbside consults"), " \u2014 are", " ", /*#__PURE__*/React.createElement("strong", null, "billed monthly"), ", and shown below as both monthly and annual figures."), /*#__PURE__*/React.createElement("p", {
     style: styles.methodText
-  }, "Specialty access is ", /*#__PURE__*/React.createElement("strong", null, fmtMoney(PER_SPECIALTY), "/specialty/mo"), ", billed once across your whole organization. Selecting all ", SPECIALTIES.length, " specialties applies a ", /*#__PURE__*/React.createElement("strong", null, "30% discount"), " (", /*#__PURE__*/React.createElement("strong", null, fmtMoneyAuto(allSpecialtyPrice), "/mo"), ", a saving of ", fmtMoneyAuto(selectAllSavings), "/mo). Each provider is ", fmtMoney(PER_PROVIDER), "/mo and includes ", INCLUDED_CONSULTS_PER_PROVIDER, " curbside consults; beyond that, add hospital-wide ", CONSULT_PACK_SIZE, "-consult Packages at ", fmtMoney(CONSULT_PACK_PRICE), "/mo or pay ", fmtMoney(CONSULT_OVERAGE), "/consult. Build the program below to see your exact investment.")), /*#__PURE__*/React.createElement("section", null, /*#__PURE__*/React.createElement("div", {
+  }, "All ", SPECIALTIES.length, " specialties are ", /*#__PURE__*/React.createElement("strong", null, "included at no additional charge"), " with your base subscription. You also receive ", /*#__PURE__*/React.createElement("strong", null, "unlimited access to additional specialists as they are added to the RHH"), ". Each provider is ", fmtMoney(PER_PROVIDER), "/mo and includes ", INCLUDED_CONSULTS_PER_PROVIDER, " curbside consults; beyond that, add hospital-wide ", CONSULT_PACK_SIZE, "-consult Packages at ", fmtMoney(CONSULT_PACK_PRICE), "/mo or pay ", fmtMoney(CONSULT_OVERAGE), "/consult. Build the program below to see your exact investment.")), /*#__PURE__*/React.createElement("section", null, /*#__PURE__*/React.createElement("div", {
     style: styles.sectionTitle
   }, /*#__PURE__*/React.createElement("span", {
     style: styles.sectionNum
@@ -956,15 +956,13 @@ function CombinedDashboard() {
     style: styles.sectionNum
   }, "02"), " Specialty Access", /*#__PURE__*/React.createElement("span", {
     style: styles.monthlyTag
-  }, fmtMoney(PER_SPECIALTY), "/specialty/mo \xB7 org-wide")), /*#__PURE__*/React.createElement("div", {
+  }, "all specialties included \xB7 no added cost")), /*#__PURE__*/React.createElement("div", {
     style: styles.selectAllBar
   }, /*#__PURE__*/React.createElement("button", {
     style: styles.selectAllBtn,
     onClick: selectAll,
     disabled: allSelected
-  }, "\u2713 Select All Specialties", /*#__PURE__*/React.createElement("span", {
-    style: styles.savingsPill
-  }, allSelected ? "All selected" : `saves ${fmtMoney(selectAllSavings)}/mo`)), /*#__PURE__*/React.createElement("button", {
+  }, "\u2713 Select All Specialties")), /*#__PURE__*/React.createElement("button", {
     style: styles.clearBtn,
     onClick: clearAll
   }, "Clear all"), /*#__PURE__*/React.createElement("div", {
@@ -994,9 +992,9 @@ function CombinedDashboard() {
     }, "(intensive program)") : null));
   })), /*#__PURE__*/React.createElement("div", {
     style: styles.panelTotal
-  }, /*#__PURE__*/React.createElement("span", null, "Specialty access ", allSelected && /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement("span", null, "Specialty access ", /*#__PURE__*/React.createElement("span", {
     style: styles.capNote
-  }, "(all-specialty 30% discount applied)")), /*#__PURE__*/React.createElement("span", {
+  }, "(all specialties included \u2014 no added cost)")), /*#__PURE__*/React.createElement("span", {
     style: styles.panelTotalVal
   }, fmtMoneyAuto(specialtyMonthly), "/mo"))), /*#__PURE__*/React.createElement("section", {
     style: {
@@ -1187,7 +1185,7 @@ function CombinedDashboard() {
     }
   }, "\u25B2 Close Step 2")), /*#__PURE__*/React.createElement("footer", {
     style: styles.footer
-  }, "Estimates only. Revenue figures use representative national Medicare rates (Texas locality) applied to a baseline of ", fmtNum(BASE_VISITS), " visits from 3 specialties over 2 years; the rate for each service can be edited to match your facility's actual reimbursement. 340B margins use editable per-script national estimates and are included in revenue totals only when toggled on. Setup is one-time; the base subscription (", fmtMoney(BASE_PER_LOCATION), " first site + ", fmtMoney(BASE_ADDITIONAL_LOCATION), "/additional, which bundles telehealth software, a WiFi-enabled stethoscope, and data analytics), specialty access, per-provider fees, and curbside consults are billed monthly. Specialty access is ", fmtMoney(PER_SPECIALTY), "/specialty/mo org-wide; selecting all ", SPECIALTIES.length, " specialties applies a 30% discount (", fmtMoneyAuto(allSpecialtyPrice), "/mo). Curbside consults include ", INCLUDED_CONSULTS_PER_PROVIDER, " per provider/mo, then ", fmtMoney(CONSULT_PACK_PRICE), "/mo per ", CONSULT_PACK_SIZE, "-consult Package or ", fmtMoney(CONSULT_OVERAGE), "/consult. Uninsured/Underinsured is a monthly subscription \u2014 Tier 1 ", fmtMoney(UNINS_TIERS[0].price), " (\u2264", UNINS_TIERS[0].cap, " visits/mo), Tier 2 ", fmtMoney(UNINS_TIERS[1].price), " (\u2264", UNINS_TIERS[1].cap, "), Tier 3 ", fmtMoney(UNINS_TIERS[2].price), " (\u2264", UNINS_TIERS[2].cap, "), Tier 4 ", fmtMoney(UNINS_TIERS[3].price), " (\u2264", UNINS_TIERS[3].cap, ") \u2014 visits over the tier cap are billed at ", fmtMoney(UNINS_OVERAGE), "/visit; sliding-scale cost for uninsured patients is ", fmtMoney(UNINS_PER_VISIT), "/visit."));
+  }, "Estimates only. Revenue figures use representative national Medicare rates (Texas locality) applied to a baseline of ", fmtNum(BASE_VISITS), " visits from 3 specialties over 2 years; the rate for each service can be edited to match your facility's actual reimbursement. 340B margins use editable per-script national estimates and are included in revenue totals only when toggled on. Setup is one-time; the base subscription (", fmtMoney(BASE_PER_LOCATION), " first site + ", fmtMoney(BASE_ADDITIONAL_LOCATION), "/additional, which bundles telehealth software, a WiFi-enabled stethoscope, and data analytics, and unlimited specialty access), per-provider fees, and curbside consults are billed monthly. All ", SPECIALTIES.length, " specialties are included at no additional charge; unlimited access to additional specialists as they are added to the RHH. Curbside consults include ", INCLUDED_CONSULTS_PER_PROVIDER, " per provider/mo, then ", fmtMoney(CONSULT_PACK_PRICE), "/mo per ", CONSULT_PACK_SIZE, "-consult Package or ", fmtMoney(CONSULT_OVERAGE), "/consult. Uninsured/Underinsured is a monthly subscription \u2014 Tier 1 ", fmtMoney(UNINS_TIERS[0].price), " (\u2264", UNINS_TIERS[0].cap, " visits/mo), Tier 2 ", fmtMoney(UNINS_TIERS[1].price), " (\u2264", UNINS_TIERS[1].cap, "), Tier 3 ", fmtMoney(UNINS_TIERS[2].price), " (\u2264", UNINS_TIERS[2].cap, "), Tier 4 ", fmtMoney(UNINS_TIERS[3].price), " (\u2264", UNINS_TIERS[3].cap, ") \u2014 visits over the tier cap are billed at ", fmtMoney(UNINS_OVERAGE), "/visit; sliding-scale cost for uninsured patients is ", fmtMoney(UNINS_PER_VISIT), "/visit."));
 }
 const css = `
   .calc-row { cursor: pointer; transition: opacity .18s ease, background .18s ease; }
