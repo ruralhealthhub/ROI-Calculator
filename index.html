@@ -234,7 +234,7 @@ function CombinedDashboard() {
   const inpatientMonthly = inpatientProvidersOn ? INPATIENT_PROVIDER_PRICE : 0;
   const extraProviderMonthly = erMonthly + inpatientMonthly;
   const extraConsults = (erProvidersOn ? ER_INPATIENT_CONSULTS : 0) + (inpatientProvidersOn ? ER_INPATIENT_CONSULTS : 0);
-  const includedConsults = p * INCLUDED_CONSULTS_PER_PROVIDER + extraConsults;
+  const includedConsults = p * INCLUDED_CONSULTS_PER_PROVIDER;
   const consultPacksNum = Number.isFinite(Number(consultPacks)) && Number(consultPacks) > 0 ? Number(consultPacks) : 0;
   const packConsults = consultPacksNum * CONSULT_PACK_SIZE;
   const expectedConsults = Number.isFinite(Number(consultEstimate)) && Number(consultEstimate) > 0 ? Number(consultEstimate) : 0;
@@ -246,7 +246,7 @@ function CombinedDashboard() {
   const telehealthMonthly = s * TELEHEALTH_PER_SITE;
   const uninsActiveTier = UNINS_TIERS.find(t => t.id === uninsTier) || UNINS_TIERS[0];
   const uninsMonthly = uninsOn ? uninsActiveTier.price : 0;
-  const discountableMonthly = baseMonthly + specialtyMonthly + providerMonthly + extraProviderMonthly + consultMonthly;
+  const discountableMonthly = baseMonthly + specialtyMonthly + providerMonthly + consultMonthly;
   const progDiscMonthly = smallHospOn ? Math.round(discountableMonthly * PROGRAM_DISCOUNT * 100) / 100 : 0;
   const progDiscSetup = smallHospOn ? Math.round(setupGross * PROGRAM_DISCOUNT * 100) / 100 : 0;
   const setupFee = setupGross - progDiscSetup;
@@ -1029,32 +1029,10 @@ function CombinedDashboard() {
     style: styles.stepBtn,
     onClick: () => setProviders(n => (Number(n) || 0) + 1)
   }, "+"))), /*#__PURE__*/React.createElement("div", {
-    style: { ...styles.rx340bBar, marginTop: 14 }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: { ...styles.toggleSw, ...(erProvidersOn ? styles.toggleOn : {}) },
-    onClick: () => setErProvidersOn(o => !o),
-    role: "switch",
-    "aria-checked": erProvidersOn
-  }, /*#__PURE__*/React.createElement("span", {
-    style: { ...styles.knob, ...(erProvidersOn ? styles.knobOn : {}) }
-  })), /*#__PURE__*/React.createElement("span", {
-    style: styles.rx340bBarText
-  }, /*#__PURE__*/React.createElement("strong", null, "Include ER Providers"), " \u2014 adds ", fmtMoney(ER_PROVIDER_PRICE), "/mo and ", ER_INPATIENT_CONSULTS, " curbside consults")), /*#__PURE__*/React.createElement("div", {
-    style: { ...styles.rx340bBar, marginTop: 10 }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: { ...styles.toggleSw, ...(inpatientProvidersOn ? styles.toggleOn : {}) },
-    onClick: () => setInpatientProvidersOn(o => !o),
-    role: "switch",
-    "aria-checked": inpatientProvidersOn
-  }, /*#__PURE__*/React.createElement("span", {
-    style: { ...styles.knob, ...(inpatientProvidersOn ? styles.knobOn : {}) }
-  })), /*#__PURE__*/React.createElement("span", {
-    style: styles.rx340bBarText
-  }, /*#__PURE__*/React.createElement("strong", null, "Include Inpatient Providers"), " \u2014 adds ", fmtMoney(INPATIENT_PROVIDER_PRICE), "/mo and ", ER_INPATIENT_CONSULTS, " curbside consults")), /*#__PURE__*/React.createElement("div", {
     style: styles.panelTotal
   }, /*#__PURE__*/React.createElement("span", null, "Provider total"), /*#__PURE__*/React.createElement("span", {
     style: styles.panelTotalVal
-  }, fmtMoney(providerMonthly + extraProviderMonthly), "/mo"))), /*#__PURE__*/React.createElement("div", {
+  }, fmtMoney(providerMonthly), "/mo"))), /*#__PURE__*/React.createElement("div", {
     style: {
       ...styles.panel,
       marginTop: 18
@@ -1089,7 +1067,7 @@ function CombinedDashboard() {
     style: styles.fieldLabel
   }, "Expected curbside consults / month"), /*#__PURE__*/React.createElement("div", {
     style: styles.fieldHint
-  }, fmtNum(includedConsults), " included (", fmtNum(p), " prov \xD7 ", INCLUDED_CONSULTS_PER_PROVIDER, extraConsults > 0 ? " + " + extraConsults + " ER/inpatient" : "", ")")), /*#__PURE__*/React.createElement("div", {
+  }, fmtNum(includedConsults), " included (", fmtNum(p), " prov \xD7 ", INCLUDED_CONSULTS_PER_PROVIDER, ")")), /*#__PURE__*/React.createElement("div", {
     style: styles.stepper
   }, /*#__PURE__*/React.createElement("button", {
     style: styles.stepBtn,
